@@ -1,0 +1,84 @@
+Course: COMP40 Spring 2021
+Students: Marshall Wilson (wwilso02) and Eliza Encherman (eenche01)
+Project: HW4 Arith
+
+             *********************************************
+             ***************  Architecture  **************
+             *********************************************
+
+        ************* General Solution Design ************
+
+    Our solution compresses RGB files by first converting them into CIE XYZ 
+        images, then compressing the XYZ image into blocks of a, b, c, d, Pb,
+        and Pr values, and finally bitpacking those values into a Hanson 
+        sequence of 32-bit words and printing that sequence 
+    Similarly, our decompression reads a compressed image into a struct that 
+        stores each 32-bit word in a Hanson sequence, converts each word in 
+        that sequence back to blocks of a, b, c, etc. values, converts those 
+        values back into a CIE XYZ image, and finally converts that CIE XYZ 
+        image back into an RGB image 
+
+
+        ********** File Architecture and Purposes **********
+
+File (.c and/or .h)                            Purpose
+*******************     *****************************************************
+
+******Steps of Compression/Decompression******
+compress40              Contains the compress and decompress functions that 
+                            control the steps of compression and decompression
+rgb_to_xyz              Contains the functions for converting RGB images (ppm)
+                            to/from XYZ images (Y/Pb/Pr)
+xyz_to_abc              Contains the functions for converting XYZ (Y/Pb/Pr)
+                            to/from ABC values (a, b, c, d, avg_Pb, avg_Pr)
+abcd_to_word            Contains the functions for compressing/decompressing 
+                            ABC values into smaller integers and packing into/
+                            unpacking from 32-bit words
+
+****** Struct files **********
+comp_img                Creates the declaration and functions for the Comp_img
+                            struct, which holds an image compressed into 32-
+                            bit words and data about the compressed image
+xyz_img                 Creates the declaration and functions for the XYZ_img
+                            struct, which holds a blocked UArray2 of Y/Pb/Pr 
+                            values stored in XYZ_pix
+
+****** Utility Files ********
+bitpack                 Contains functions for bit manipulation of 64-bit 
+                            integers, which we use to compress ABC values 
+                            into words 
+open_or_die             Contains function for opening file pointers and 
+                            handling file errors (created for HW1)
+math_funs               Contains a few small math functions that we found 
+                            helpful in multiple files 
+
+
+
+
+                            **********************
+                            ** Acknowledgements **
+                            **********************
+
+    Thanks to Gustavo, Dylan, Michael, Adam, Liana, and Immy who helped us 
+        in office hours. 
+
+
+
+                            **********************
+                            **  Implementation  **
+                            **********************    
+    
+    As far as we are aware, everything has been successfully implemented. 
+    
+    Our compression and decompression functions seem to be within the defined
+    bounds of image loss for reasonable images (no high saturation values) and
+    only slightly worse for very bright and colorful images. 
+
+
+
+                            **********************
+                            ****  Time Taken  ****
+                            **********************
+
+    Analysis/Design:    5.5 hours
+    Coding:             28 hours            
